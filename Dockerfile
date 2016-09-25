@@ -3,9 +3,9 @@ FROM debian:jessie
 ENV ZEPPELIN_REPO_URL=https://github.com/apache/incubator-zeppelin.git
 ENV ZEPPELIN_REPO_BRANCH=master
 ENV ZEPPELIN_HOME=/opt/zeppelin
-ENV SPARK_PROFILE=1.6
+ENV SPARK_PROFILE=2.0
 ENV SPARK_HOME=/opt/spark
-ENV SPARK_VERSION=1.6.1
+ENV SPARK_VERSION=2.0.0
 ENV HADOOP_PROFILE=2.6
 ENV HADOOP_VERSION=2.6.2
 ENV JAVA_HOME=/usr/jdk1.8.0_31
@@ -56,9 +56,8 @@ RUN cd /usr/local \
     && git clone ${ZEPPELIN_REPO_URL} \
     && cd incubator-zeppelin \
     && git checkout  ${ZEPPELIN_REPO_BRANCH}\
-    && sed -i -- 's/.altKey/.shiftKey/g' zeppelin-web/src/app/notebook/paragraph/paragraph.controller.js \
     && mvn clean package \
-    -pl '!flink,!ignite,!phoenix,!postgresql,!tajo,!hive,!cassandra,!lens,!kylin,!hbase,!jdbc,!elasticsearch,!alluxio' \
+    -pl '!flink,!ignite,!postgresql,!cassandra,!lens,!kylin,!hbase,!jdbc,!elasticsearch,!alluxio',!bigquery,!livy\
     -Phadoop-$HADOOP_PROFILE \
     -Dhadoop.version=$HADOOP_VERSION \
     -Pspark-$SPARK_PROFILE \
